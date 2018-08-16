@@ -1,6 +1,8 @@
 package dpm.location.tracker;
 
 import android.Manifest;
+import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -21,8 +23,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import dpm.location.tracker.room.LocationDb;
+import dpm.location.tracker.room.LocationRepository;
+import dpm.location.tracker.room.storedLoctation;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static android.support.v4.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 
@@ -37,6 +44,8 @@ public class JobServiceDemoActivity extends AppCompatActivity
 
     public static final String MESSENGER_INTENT_KEY = "msg-intent-key";
 
+    private static final String DATABASE_NAME = "LocaionDB";
+
     private TextView locationMsg;
 
     // as google doc says
@@ -49,6 +58,20 @@ public class JobServiceDemoActivity extends AppCompatActivity
         setContentView(R.layout.activity_job_service_demo);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //room
+
+        List<storedLoctation> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            storedLoctation location = new storedLoctation();
+            location.setLat("2");
+            location.setLon("1");
+            list.add(location);
+        }
+        LocationRepository.get().getDB().locationDao().insertAll(list);
+
+        List<storedLoctation> products = LocationRepository.get().getDB().locationDao().getAll();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

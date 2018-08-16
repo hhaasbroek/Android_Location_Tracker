@@ -10,7 +10,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import static dpm.location.tracker.JobServiceDemoActivity.MESSENGER_INTENT_KEY;
+import static dpm.location.tracker.JobServiceDemoActivity.Companion;
 
 
 /**
@@ -57,7 +57,7 @@ public class LocationUpdatesService extends JobService implements LocationUpdate
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand Service started");
         if (intent != null) {
-            mActivityMessenger = intent.getParcelableExtra(MESSENGER_INTENT_KEY);
+            mActivityMessenger = intent.getParcelableExtra(Companion.getMESSENGER_INTENT_KEY());
         }
         //hey request for location updates
         locationUpdatesComponent.onStart();

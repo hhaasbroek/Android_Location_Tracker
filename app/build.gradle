@@ -29,6 +29,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.android.gms:play-services-location:11.8.0'
 
+    implementation "org.jetbrains.anko:anko-commons:0.10.5"
+
     compile 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 }

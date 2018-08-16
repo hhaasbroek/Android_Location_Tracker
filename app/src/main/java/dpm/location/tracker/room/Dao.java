@@ -11,9 +11,6 @@ public interface Dao {
     @Query("SELECT * FROM storedLoctation")
     List<storedLoctation> getAll();
 
-    @Query("SELECT * FROM storedLoctation")
-    storedLoctation findAll(String location);
-
     @Insert
     void insertAll(List<storedLoctation> location);
 

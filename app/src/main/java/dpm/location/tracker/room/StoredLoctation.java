@@ -3,18 +3,19 @@ package dpm.location.tracker.room;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.location.Location;
+import java.util.Locale;
 
 @Entity
-public class storedLoctation {
+public class StoredLoctation {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 
     @ColumnInfo(name = "Lat")
-    private String lat;
+    private Double lat;
 
     @ColumnInfo(name = "Long")
-    private String lon;
+    private Double lon;
 
     public int getId() {
         return id;
@@ -24,20 +25,24 @@ public class storedLoctation {
         this.id = id;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 
+    @Override
+    public String toString() {
+        return String.format(Locale.getDefault(), "%f, %f", getLat(), getLon());
+    }
 }

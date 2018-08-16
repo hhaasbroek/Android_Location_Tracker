@@ -8,13 +8,16 @@ import java.util.List;
 @android.arch.persistence.room.Dao
 public interface Dao {
 
-    @Query("SELECT * FROM storedLoctation")
-    List<storedLoctation> getAll();
+    @Query("SELECT * FROM StoredLoctation")
+    List<StoredLoctation> getAll();
 
     @Insert
-    void insertAll(List<storedLoctation> location);
+    void insertAll(List<StoredLoctation> location);
 
     @Update
-    void update(storedLoctation location);
+    void update(StoredLoctation location);
+
+    @Query("DELETE FROM StoredLoctation")
+    public void nukeTable();
 
 }

@@ -58,18 +58,7 @@ class JobServiceDemoActivity : AppCompatActivity(), NavigationView.OnNavigationI
                 LocationUpdatesService.LOCATION_MESSAGE -> {
                     val obj = msg.obj as Location
                     val currentDateTimeString = DateFormat.getDateTimeInstance().format(Date())
-                    locationMsg!!.text = "LAT :  " + obj.latitude + "\nLNG : " + obj.longitude + "\n\n" + obj.toString() + " \n\n\nLast updated- " + currentDateTimeString
-                    val location = StoredLoctation()
-                    location.lat = obj.latitude
-                    location.lon = obj.longitude
-                    val list = ArrayList<StoredLoctation>()
-                    list.add(location)
-                    doAsync {
-                        db.locationDao().insertAll(list)
-                        uiThread {
-
-                        }
-                    }
+                    locationMsg?.text = "LAT :  " + obj.latitude + "\nLNG : " + obj.longitude + "\n\n" + obj.toString() + " \n\n\nLast updated- " + currentDateTimeString
                 }
             }
         }

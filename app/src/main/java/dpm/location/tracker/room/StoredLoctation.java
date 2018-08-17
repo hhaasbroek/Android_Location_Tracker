@@ -3,6 +3,7 @@ package dpm.location.tracker.room;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import java.util.Date;
 import java.util.Locale;
 
 @Entity
@@ -11,11 +12,25 @@ public class StoredLoctation {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "IsBackground")
+    private Boolean isBackground;
+
     @ColumnInfo(name = "Lat")
     private Double lat;
 
     @ColumnInfo(name = "Long")
     private Double lon;
+
+    @ColumnInfo(name = "Timestamp")
+    private Long timestamp;
+
+    public Boolean getBackground() {
+        return isBackground;
+    }
+
+    public void setBackground(final Boolean background) {
+        isBackground = background;
+    }
 
     public int getId() {
         return id;
@@ -41,8 +56,16 @@ public class StoredLoctation {
         this.lon = lon;
     }
 
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(final Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(), "%f, %f", getLat(), getLon());
+        return String.format(Locale.getDefault(), "%b - %s: %f, %f", isBackground, new Date(getTimestamp()).toGMTString(), getLat(), getLon());
     }
 }

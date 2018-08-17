@@ -27,12 +27,12 @@ class ListViewActivity : AppCompatActivity() {
         val location = StoredLoctation()
 
         val listView = findViewById(R.id.location_listview) as ListView
-        itemsAdapter = ArrayAdapter<StoredLoctation>(this, R.layout.single_item)
+        itemsAdapter = ArrayAdapter<StoredLoctation>(this,android.R.layout.simple_list_item_1)
         listView.setAdapter(itemsAdapter)
 
 
         doAsync {
-            val products = db.locationDao().all
+            val products: List<StoredLoctation> = db.locationDao().all
             uiThread {
                 itemsAdapter?.addAll(products)
             }

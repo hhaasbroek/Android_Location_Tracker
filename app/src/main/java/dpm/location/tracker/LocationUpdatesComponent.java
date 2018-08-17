@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,7 +26,7 @@ public class LocationUpdatesComponent {
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3 * 1000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 1000;
 
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
@@ -89,6 +90,8 @@ public class LocationUpdatesComponent {
         //hey request for location updates
         requestLocationUpdates();
     }
+
+
 
     /**
      * remove location updates
@@ -169,6 +172,7 @@ public class LocationUpdatesComponent {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setSmallestDisplacement(20);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 

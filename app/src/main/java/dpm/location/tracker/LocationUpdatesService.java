@@ -8,6 +8,8 @@ import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -20,7 +22,10 @@ import android.util.Log;
 import dpm.location.tracker.room.LocationDb;
 import dpm.location.tracker.room.LocationRepository;
 import dpm.location.tracker.room.StoredLoctation;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -162,6 +167,35 @@ public class LocationUpdatesService extends JobService implements LocationUpdate
 
     }
 
+    private String getAddressFromLocation(double latitude, double longitude) {
+
+        Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
+
+
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+            if (addresses.size() > 0) {
+                Address fetchedAddress = addresses.get(0);
+                StringBuilder strAddress = new StringBuilder();
+                for (int i = 0; i < fetchedAddress.getMaxAddressLineIndex() + 1; i++) {
+                    strAddress.append(fetchedAddress.getAddressLine(i));
+                }
+
+                return strAddress.toString();
+
+            } else {
+               return ("Searching Current Address");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+
     private int mCountBg = 0;
     private int mCountFg = 0;
 
@@ -169,12 +203,18 @@ public class LocationUpdatesService extends JobService implements LocationUpdate
      * send message by using messenger
      */
     private void sendMessage(int messageID, final Location location) {
-
+        String address = getAddressFromLocation(location.getLatitude(),location.getLongitude());
         StoredLoctation loc = new StoredLoctation();
         loc.setLat(location.getLatitude());
         loc.setLon(location.getLongitude());
         loc.setTimestamp(location.getTime());
+        loc.setAddress(address);
         loc.setBackground(mActivityMessenger == null);
+
+
+
+
+        saveLocation(loc);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -182,7 +222,7 @@ public class LocationUpdatesService extends JobService implements LocationUpdate
                 .setContentTitle("Location Updated")
                 .setOnlyAlertOnce(true)
                 .setWhen(loc.getTimestamp())
-                .setContentText(String.format("%d --  %s", mActivityMessenger == null ? mCountBg : mCountFg, loc.toString()))
+                .setContentText(String.format("%d-- %s-- %s", mActivityMessenger == null ? mCountBg : mCountFg,address, loc.toString()))
                 .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
                 .setNumber(mActivityMessenger == null ? mCountBg : mCountFg)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);

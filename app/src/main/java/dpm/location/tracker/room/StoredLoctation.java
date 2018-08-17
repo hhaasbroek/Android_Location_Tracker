@@ -21,11 +21,22 @@ public class StoredLoctation {
     @ColumnInfo(name = "Long")
     private Double lon;
 
+    @ColumnInfo(name = "Address")
+    private String address;
+
     @ColumnInfo(name = "Timestamp")
     private Long timestamp;
 
+    public String getAddress() {
+        return address;
+    }
+
     public Boolean getBackground() {
         return isBackground;
+    }
+
+    public void setAddress(final String address) {
+        this.address = address;
     }
 
     public void setBackground(final Boolean background) {
@@ -66,6 +77,6 @@ public class StoredLoctation {
 
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(), "%b - %s: %f, %f", isBackground, new Date(getTimestamp()).toGMTString(), getLat(), getLon());
+        return String.format(Locale.getDefault(), "%b - %s: %s: - %f, %f", isBackground, new Date(getTimestamp()).toGMTString(),getAddress(), getLat(), getLon());
     }
 }
